@@ -1,18 +1,128 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Boss : MonoBehaviour {
+public class Boss : MonoBehaviour 
+{
+	// boss stats
+	public int HP;
+	public int level; 
 
-	// Use this for initialization
-	void Start () {
-	
+	// boss attacks 
+	public GameObject swipe;
+	public GameObject projectile;
+	public GameObject laser; 
+	public GameObject shield; 
+
+	public int swipeCooldown;
+	public int projectileCooldown;
+	public int laserCooldown; 
+	public int shieldCooldown;
+
+	private int swipeCurrent;
+	private int projectileCurrent;
+	private int laserCurrent;
+	private int shieldCurrent;
+
+	// damage values
+	public bool hit; 
+	public int swordDamage;
+	public int arrowDamage; 
+
+	void Start () 
+	{
+		HP = 500;
+		level = 1; 
+
+		swipeCurrent = swipeCooldown;
+		projectileCurrent = projectileCooldown;
+		laserCurrent = laserCooldown;
+		shieldCurrent = shieldCooldown; 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-		//hello i am boss pls respect me
 
+	void Update () 
+	{
+		coolDown ();
+		attack ();
+	}
 
+	void coolDown()
+	{
+		swipeCurrent++;
+		projectileCurrent++;
+		laserCurrent++;
+		shieldCurrent++; 
+	}
+
+	void attack()
+	{
+		// Grab. Available from the start. 
+		if (Input.GetKeyDown (KeyCode.Alpha1))
+		{
+			if (swipeCurrent >= swipeCooldown)
+			{
+				Instantiate (swipe); 
+				swipeCurrent = 0; 
+			}
+		}
+
+		// Rock throw. 
+		else if (Input.GetKeyDown (KeyCode.Alpha2))
+		{
+			if (level > 1)
+			{
+				if (projectileCurrent >= projectileCooldown)
+				{
+					Instantiate (projectile); 
+					projectileCurrent = 0; 
+				}
+			}
+		}
+
+		// Laser. 
+		else if (Input.GetKeyDown (KeyCode.Alpha3))
+		{
+			if (level > 2)
+			{
+				if (laserCurrent >= laserCooldown)
+				{
+					Instantiate (laser);
+					laserCurrent = 0; 
+				} 
+			}
+		}
+
+		else if (Input.GetKeyDown (KeyCode.Space))
+		{
+			if (level > 3)
+			{
+				if (shieldCurrent >= shieldCooldown)
+				{
+					Instantiate (shield); 
+					shieldCurrent = 0; 
+				}
+			}
+		}
+	}
+
+	void OnTriggerEnter2D (Collider2D col)
+	{
+		if (!hit)
+		{
+			if (col.tag == "Sword")
+			{
+				HP -= swordDamage;
+			}
+
+			else if (col.tag == "Arrow")
+			{
+				HP -= arrowDamage; 
+			}
+			hit = true; 
+		}
+	}
+
+	void OnTriggerExit2D (Collider2D col)
+	{
+		hit = false; 
 	}
 }
