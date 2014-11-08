@@ -7,9 +7,12 @@ public class Projectile : MonoBehaviour {
 	public float speed; 
 	public float delay; 
 
+	public BoxCollider2D collider;
+
 	// make the projectile face the direction of the mouse at creation
 	void Start () {
 		throwTarget = GameObject.Find ("MouseTarget").transform.position; 
+		collider = gameObject.GetComponent<BoxCollider2D> ();
 
 		Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 		diff.Normalize();
@@ -25,6 +28,7 @@ public class Projectile : MonoBehaviour {
 
 		if (transform.position.y <= throwTarget.y + 0.05f)
 		{
+			collider.enabled = true; 
 			StartCoroutine (delayDestroy());
 		}
 	}

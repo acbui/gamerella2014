@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MouseTarget : MonoBehaviour 
+public class RotateToMouse : MonoBehaviour 
 {
 	
 	void Start () 
