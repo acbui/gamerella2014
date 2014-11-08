@@ -26,6 +26,7 @@ public class Boss : MonoBehaviour
 	// damage values
 	public bool hit; 
 	public int swordDamage;
+	public int magicDamage; 
 	public int arrowDamage; 
 
 	void Start () 
@@ -110,12 +111,19 @@ public class Boss : MonoBehaviour
 		{
 			if (col.tag == "Sword")
 			{
-				HP -= swordDamage;
+				int damage = Random.Range (0, swordDamage+1);
+				HP -= damage;
+			}
+			else if (col.tag == "Magic")
+			{
+				int damage = Random.Range (0, magicDamage+1);
+				HP -= damage;
 			}
 
 			else if (col.tag == "Arrow")
 			{
-				HP -= arrowDamage; 
+				int damage = Random.Range (0, arrowDamage+1);
+				HP -= damage; 
 			}
 
 			hit = true; 
