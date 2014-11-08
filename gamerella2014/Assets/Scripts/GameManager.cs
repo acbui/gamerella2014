@@ -3,6 +3,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+	public Boss boss;
+
+	public Transform healthbar; 
 	// Use this for initialization
 	void Start () {
 	
@@ -10,6 +13,11 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		updateGUI ();
+	}
+
+	void updateGUI()
+	{
+		healthbar.localScale = new Vector3 (((float) boss.HP)/ ((float) boss.maxHP), healthbar.localScale.y, healthbar.localScale.z);
 	}
 }

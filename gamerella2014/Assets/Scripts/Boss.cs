@@ -7,6 +7,9 @@ public class Boss : MonoBehaviour
 	public int HP;
 	public int level; 
 
+	// set stats
+	public int maxHP;
+
 	// boss attacks 
 	public GameObject swipe;
 	public GameObject projectile;
@@ -31,7 +34,6 @@ public class Boss : MonoBehaviour
 
 	void Start () 
 	{
-		HP = 500;
 		level = 5; 
 
 		swipeCurrent = swipeCooldown;
@@ -73,7 +75,14 @@ public class Boss : MonoBehaviour
 			{
 				if (swipeCurrent >= swipeCooldown)
 				{
-					Instantiate (swipe); 
+					if (GameObject.Find ("MouseTarget").transform.position.x > 0)
+					{
+						Instantiate (swipe); 
+					}
+					else 
+					{
+						Instantiate (swipe); 
+					}
 					swipeCurrent = 0; 
 				}
 			}
