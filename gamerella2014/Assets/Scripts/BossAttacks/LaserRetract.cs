@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class laserRetract : MonoBehaviour {
+public class LaserRetract : MonoBehaviour {
 	
 	public float speed; 
 	public float delay; 
@@ -12,8 +12,8 @@ public class laserRetract : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-		transform.localScale = Vector3.Lerp (transform.localScale, new Vector3 (transform.localScale.x, 0, transform.localScale.z), Time.deltaTime * speed); 
-		if (transform.position.y <= 0.05f)
+		transform.localScale = Vector3.Lerp (transform.localScale, new Vector3 (transform.localScale.x, 1, transform.localScale.z), Time.deltaTime * speed); 
+		if (transform.position.y <= 1.05f)
 		{
 			StartCoroutine (delayDestroy());
 		}
@@ -22,6 +22,6 @@ public class laserRetract : MonoBehaviour {
 	IEnumerator delayDestroy()
 	{
 		yield return new WaitForSeconds (delay);
-		Destroy (gameObject);
+		Destroy (gameObject.GetComponentInParent<Transform>().gameObject);
 	}
 }

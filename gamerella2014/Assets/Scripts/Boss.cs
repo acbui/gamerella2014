@@ -32,7 +32,7 @@ public class Boss : MonoBehaviour
 	void Start () 
 	{
 		HP = 500;
-		level = 1; 
+		level = 5; 
 
 		swipeCurrent = swipeCooldown;
 		projectileCurrent = projectileCooldown;
@@ -56,7 +56,7 @@ public class Boss : MonoBehaviour
 
 	void attack()
 	{
-		// Grab. Available from the start. 
+		// Throw
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 		{
 			if (projectileCurrent >= projectileCooldown)
@@ -66,7 +66,7 @@ public class Boss : MonoBehaviour
 			}
 		}
 
-		// Rock throw. 
+		// Swipe
 		else if (Input.GetKeyDown (KeyCode.Alpha2))
 		{
 			if (level > 1)
@@ -82,11 +82,13 @@ public class Boss : MonoBehaviour
 		// Laser. 
 		else if (Input.GetKeyDown (KeyCode.Alpha3))
 		{
+			print ("key");
 			if (level > 2)
 			{
 				if (laserCurrent >= laserCooldown)
 				{
-					Instantiate (laser);
+					print ("lasers");
+					//Instantiate (laser);
 					laserCurrent = 0; 
 				} 
 			}
