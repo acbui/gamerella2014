@@ -58,10 +58,10 @@ public class Boss : MonoBehaviour
 		// Grab. Available from the start. 
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 		{
-			if (swipeCurrent >= swipeCooldown)
+			if (projectileCurrent >= projectileCooldown)
 			{
-				Instantiate (swipe); 
-				swipeCurrent = 0; 
+				Instantiate (projectile); 
+				projectileCurrent = 0; 
 			}
 		}
 
@@ -70,10 +70,10 @@ public class Boss : MonoBehaviour
 		{
 			if (level > 1)
 			{
-				if (projectileCurrent >= projectileCooldown)
+				if (swipeCurrent >= swipeCooldown)
 				{
-					Instantiate (projectile); 
-					projectileCurrent = 0; 
+					Instantiate (swipe); 
+					swipeCurrent = 0; 
 				}
 			}
 		}
@@ -117,6 +117,7 @@ public class Boss : MonoBehaviour
 			{
 				HP -= arrowDamage; 
 			}
+
 			hit = true; 
 		}
 	}
