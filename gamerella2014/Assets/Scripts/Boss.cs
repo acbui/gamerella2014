@@ -118,12 +118,14 @@ public class Boss : MonoBehaviour
 			{
 				int damage = Random.Range (0, magicDamage+1);
 				HP -= damage;
+				Destroy (col.gameObject); 
 			}
 
 			else if (col.tag == "Arrow")
 			{
 				int damage = Random.Range (0, arrowDamage+1);
 				HP -= damage; 
+				Destroy (col.gameObject);
 			}
 
 			hit = true; 
