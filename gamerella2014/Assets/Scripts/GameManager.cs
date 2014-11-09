@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+	public GameObject BossPrefab; 
 	public Boss boss;
 
 	public Transform healthbar; 
