@@ -127,7 +127,7 @@ public class Boss : MonoBehaviour
 		}
 
 		// Swipe
-		else if (Input.GetKeyDown (KeyCode.Alpha2) || Input.GetKeyDown (KeyCode.X) || Input.GetMouseButtonDown(2))
+		else if (Input.GetKeyDown (KeyCode.Alpha2) || Input.GetKeyDown (KeyCode.X) || Input.GetMouseButtonDown(1))
 		{
 			if (level > 1)
 			{
