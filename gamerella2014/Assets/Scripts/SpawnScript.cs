@@ -5,7 +5,7 @@ public class SpawnScript : MonoBehaviour
 {
 	public GameObject enemy;
 	public float timer;
-	public int cap = 10;
+	public int cap = 4;
 	private int count;
 
 	void Awake ()

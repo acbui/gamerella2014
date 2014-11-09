@@ -15,6 +15,14 @@ public class Enemy : MonoBehaviour
 	private bool flee;
 	private float fleeTime;
 
+	public enum EnemyClass
+	{
+		Warrior,
+		Archer,
+		Mage
+	}
+	public EnemyClass enemyClass;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -53,16 +61,41 @@ public class Enemy : MonoBehaviour
 			flee = false;
 		}
 
-		if (distance < 20 && distance != 0 && !attack && !flee)
+		if (enemyClass == EnemyClass.Warrior)
 		{
-			deltaX = player.x - transform.position.x;
-			deltaY = player.y - transform.position.y;
-			playerDirection = new Vector2 (deltaX, deltaY);
-			
-			if (!Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+			if (distance < 10 && distance != 0 && !attack && !flee)
 			{
-				rigidbody2D.AddForce (playerDirection.normalized * speed);
+				deltaX = player.x - transform.position.x;
+				deltaY = player.y - transform.position.y;
+				playerDirection = new Vector2 (deltaX, deltaY);
+				
+				if (!Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+				{
+					rigidbody2D.AddForce (playerDirection.normalized * speed);
+				}
 			}
+		}
+
+		if (enemyClass == EnemyClass.Archer || enemyClass == EnemyClass.Mage)
+		{
+			if (distance < 10 && distance >= 5 && distance != 0 && !attack && !flee)
+			{
+				deltaX = player.x - transform.position.x;
+				deltaY = player.y - transform.position.y;
+				playerDirection = new Vector2 (deltaX, deltaY);
+				
+				if (!Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+				{
+					rigidbody2D.AddForce (playerDirection.normalized * speed);
+				}
+			}
+
+			if (distance <= 5 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+			{
+				attack = true;
+			}
+			else
+				attack = false;
 		}
 	}
 
@@ -72,20 +105,23 @@ public class Enemy : MonoBehaviour
 		{
 			Debug.Log ("Swiper no swiping");
 			flee = true;
-			fleeTime = 2;
+			fleeTime = 1;
 		}
 	}
 
 	void OnCollisionStay2D (Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Player")
+		if (enemyClass == EnemyClass.Warrior)
 		{
-			attack = true;
-//			attackTime = 3;
-		}
-		else
-		{
-			attack = false;
+			if (collision.gameObject.tag == "Player")
+			{
+				attack = true;
+//				attackTime = 3;
+			}
+			else
+			{
+				attack = false;
+			}
 		}
 	}
 
