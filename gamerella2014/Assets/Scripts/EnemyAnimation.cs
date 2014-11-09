@@ -36,7 +36,7 @@ public class EnemyAnimation : MonoBehaviour
 			anim.SetBool ("WalkFront", false);
 		}
 
-		if (gameObject.GetComponent <Enemy> ().isWaiting ())
+		if (gameObject.GetComponent <Enemy> ().isAttacking ())
 		{
 			anim.SetBool ("Attack", true);
 		}
