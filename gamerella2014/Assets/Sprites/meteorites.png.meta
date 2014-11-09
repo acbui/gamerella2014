@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 838ccd86da324424cb4e7d2f10c7f15b
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: meteorites_0
+    21300002: meteorites_1
+    21300004: meteorites_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -31,7 +34,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -42,6 +45,36 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: meteorites_0
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 84
+        width: 184
+        height: 280
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: meteorites_1
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 75
+        width: 216
+        height: 302
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: meteorites_2
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 68
+        width: 187
+        height: 287
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
