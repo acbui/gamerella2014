@@ -37,8 +37,15 @@ public class Boss : MonoBehaviour
 	public Material _hit;
 	public float fadeDelay; 
 
+	// to shift up with each level up 
+	public Vector3[] shiftPositions;
+	public int currentPos; 
+	public float speed; 
+
 	void Start () 
 	{
+		//level = 1;
+		currentPos = level - 1; 
 		level = 5; 
 
 		swipeCurrent = swipeCooldown;
@@ -53,6 +60,11 @@ public class Boss : MonoBehaviour
 	{
 		coolDown ();
 		attack ();
+	}
+
+	void FixedUpdate()
+	{
+		transform.position = Vector3.Lerp (transform.position, shiftPositions [currentPos], speed * Time.deltaTime); 
 	}
 
 	void coolDown()
@@ -159,6 +171,12 @@ public class Boss : MonoBehaviour
 		}
 		StartCoroutine (fadeHit ());
 
+	}
+
+	public void updateBoss(int lvl)
+	{
+		level = lvl;
+		currentPos = lvl - 1;
 	}
 
 	IEnumerator fadeHit()
