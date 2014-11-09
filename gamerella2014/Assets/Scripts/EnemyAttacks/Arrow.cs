@@ -6,6 +6,7 @@ public class Arrow : MonoBehaviour {
 	public CircleCollider2D[] targets; 
 	public Vector3 arrowTarget;
 	public float speed;
+	public CircleCollider2D coll;
 
 	void Start () {
 		targets = FindObjectsOfType(typeof(CircleCollider2D)) as CircleCollider2D[];
@@ -22,9 +23,22 @@ public class Arrow : MonoBehaviour {
 				if (targets[index].enabled)
 				{
 					CircleCollider2D col = targets[index];
+					coll = col;
 					arrowTarget = col.gameObject.transform.position; 
+					if (GameManager.ins.bossLevel == 2 || coll == null)
+					{
+						if (col.gameObject.name.Contains ("level3") || coll == null)
+						{
+							arrowTarget = GameObject.Find ("level1_head").transform.position; 
+						}
+					}
+
 				}
 				setTarget = true;
+			}
+			if (coll == null)
+			{
+				Destroy (gameObject);
 			}
 			/*if (GameManager.ins.bossLevel >= 2)
 			{ 
@@ -57,6 +71,11 @@ public class Arrow : MonoBehaviour {
 		
 		float rot = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.Euler(0f, 0f, rot - 90);
+	}
+
+	void Update()
+	{
+		arrowTarget = coll.gameObject.transform.position;
 	}
 
 	void FixedUpdate()
