@@ -116,7 +116,7 @@ public class Boss : MonoBehaviour
 	void attack()
 	{
 		// Throw
-		if (Input.GetKeyDown (KeyCode.Alpha1))
+		if (Input.GetKeyDown (KeyCode.Alpha1) || Input.GetKeyDown (KeyCode.Z) || Input.GetMouseButtonDown(0))
 		{
 			if (projectileCurrent >= projectileCooldown)
 			{
@@ -127,7 +127,7 @@ public class Boss : MonoBehaviour
 		}
 
 		// Swipe
-		else if (Input.GetKeyDown (KeyCode.Alpha2))
+		else if (Input.GetKeyDown (KeyCode.Alpha2) || Input.GetKeyDown (KeyCode.X) || Input.GetMouseButtonDown(2))
 		{
 			if (level > 1)
 			{
@@ -151,7 +151,7 @@ public class Boss : MonoBehaviour
 		}
 
 		// Laser. 
-		else if (Input.GetKeyDown (KeyCode.Alpha3))
+		else if (Input.GetKeyDown (KeyCode.Alpha3)|| Input.GetKeyDown (KeyCode.C) || Input.GetMouseButtonDown(2))
 		{
 			if (level > 2)
 			{
