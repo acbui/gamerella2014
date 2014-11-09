@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
 				}
 			}
 
-			if (distance <= 7 && distance >= 5 && distance != 0 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+			if (distance <= 5 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
 			{
 				attack = true;
 			}
@@ -105,7 +105,7 @@ public class Enemy : MonoBehaviour
 		{
 			Debug.Log ("Swiper no swiping");
 			flee = true;
-			fleeTime = 2;
+			fleeTime = 1;
 		}
 	}
 
