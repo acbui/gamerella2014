@@ -11,14 +11,20 @@ public class Arrow : MonoBehaviour {
 		targets = FindObjectsOfType(typeof(CircleCollider2D)) as CircleCollider2D[];
 		if (GameManager.ins.bossLevel == 1)
 		{
-			arrowTarget = targets[0].gameObject.transform.position; 
+			arrowTarget = GameObject.Find ("level1_head").transform.position; 
 		}
 		else 
 		{
-			CircleCollider2D col = targets[Random.Range (0, targets.Length)];
-			if (col.gameObject.activeSelf)
+			bool setTarget = false; 
+			while (!setTarget)
 			{
-				arrowTarget = col.gameObject.transform.position; 
+				int index = Random.Range (0, targets.Length);
+				if (targets[index].enabled)
+				{
+					CircleCollider2D col = targets[index];
+					arrowTarget = col.gameObject.transform.position; 
+				}
+				setTarget = true;
 			}
 			/*if (GameManager.ins.bossLevel >= 2)
 			{ 

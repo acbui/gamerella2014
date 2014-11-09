@@ -23,6 +23,10 @@ public class Enemy : MonoBehaviour
 	}
 	public EnemyClass enemyClass;
 
+	public GameObject arrowPrefab;
+	public GameObject fireballPrefab;
+	private bool shooting;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,7 +42,7 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		player = GameObject.Find ("Player").transform.position;
+		player = GameObject.Find ("Boss Total").transform.position;
 
 		distance = Vector2.Distance (player, transform.position);
 
@@ -92,6 +96,11 @@ public class Enemy : MonoBehaviour
 
 			if (distance <= 5 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
 			{
+				if (!shooting)
+				{
+					shooting = true; 
+					StartCoroutine (shoot ());
+				}
 				attack = true;
 			}
 			else
@@ -113,7 +122,7 @@ public class Enemy : MonoBehaviour
 	{
 		if (enemyClass == EnemyClass.Warrior)
 		{
-			if (collision.gameObject.tag == "Player")
+			if (collision.gameObject.tag == "Boss")
 			{
 				attack = true;
 //				attackTime = 3;
@@ -133,5 +142,19 @@ public class Enemy : MonoBehaviour
 	public bool isAttacking ()
 	{
 		return attack;
+	}
+
+	IEnumerator shoot()
+	{
+		yield return new WaitForSeconds (1); 
+		if (enemyClass == EnemyClass.Archer)
+		{
+			Instantiate (arrowPrefab, transform.position, Quaternion.identity);
+		}
+		if (enemyClass == EnemyClass.Mage)
+		{
+			Instantiate (fireballPrefab, transform.position, Quaternion.identity);
+		}
+		shooting = false;
 	}
 }
