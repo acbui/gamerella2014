@@ -15,6 +15,6 @@ public class RotateToMouse : MonoBehaviour
 		diff.Normalize();
 		
 		float rot = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(0f, 0f, rot - 90);
+		transform.rotation = Quaternion.Euler(0f, 0f, rot-90);
 	}
 }

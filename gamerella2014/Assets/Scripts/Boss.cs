@@ -32,6 +32,8 @@ public class Boss : MonoBehaviour
 	public int magicDamage; 
 	public int arrowDamage; 
 
+	public GameObject dmgText; 
+
 	void Start () 
 	{
 		level = 5; 
@@ -124,12 +126,19 @@ public class Boss : MonoBehaviour
 			{
 				int damage = Random.Range (0, swordDamage+1);
 				HP -= damage;
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
+
 			}
 			else if (col.tag == "Magic")
 			{
 				int damage = Random.Range (0, magicDamage+1);
 				HP -= damage;
 				Destroy (col.gameObject); 
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
 			}
 
 			else if (col.tag == "Arrow")
@@ -137,8 +146,10 @@ public class Boss : MonoBehaviour
 				int damage = Random.Range (0, arrowDamage+1);
 				HP -= damage; 
 				Destroy (col.gameObject);
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
 			}
-
 			hit = true; 
 		}
 	}
