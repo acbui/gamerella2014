@@ -8,9 +8,11 @@ public class Projectile : MonoBehaviour {
 	public float delay; 
 
 	public BoxCollider2D collider;
+	public Sprite[] sprites; 
 
 	// make the projectile face the direction of the mouse at creation
 	void Start () {
+		gameObject.GetComponent<SpriteRenderer> ().sprite = sprites [Random.Range (0,sprites.Length)];
 		throwTarget = GameObject.Find ("MouseTarget").transform.position; 
 		collider = gameObject.GetComponent<BoxCollider2D> ();
 

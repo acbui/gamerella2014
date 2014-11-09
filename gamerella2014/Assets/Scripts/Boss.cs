@@ -104,7 +104,7 @@ public class Boss : MonoBehaviour
 				if (laserCurrent >= laserCooldown)
 				{
 					print ("lasers");
-					//Instantiate (laser);
+					Instantiate (laser);
 					laserCurrent = 0; 
 				} 
 			}
