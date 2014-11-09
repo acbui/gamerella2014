@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
 //	private float attackTime;
 	private bool flee;
 	private float fleeTime;
+	public int health = 2;
+	public Material _hit;
+	private Material _default;
 
 	public enum EnemyClass
 	{
@@ -25,7 +28,7 @@ public class Enemy : MonoBehaviour
 
 	public GameObject arrowPrefab;
 	public GameObject fireballPrefab;
-	private bool shooting;
+	private bool shooting; 
 
 	// Use this for initialization
 	void Start () 
@@ -37,12 +40,14 @@ public class Enemy : MonoBehaviour
 
 		flee = false;
 		fleeTime = 0;
+
+		_default = renderer.material;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		player = GameObject.Find ("Boss Total").transform.position;
+		player = GameObject.Find ("Player").transform.position;
 
 		distance = Vector2.Distance (player, transform.position);
 
@@ -54,6 +59,9 @@ public class Enemy : MonoBehaviour
 //		{
 //			attack = false;
 //		}
+
+		if (health <= 0)
+			StartCoroutine (KILL ());
 
 		if (fleeTime > 0)
 		{
@@ -101,6 +109,7 @@ public class Enemy : MonoBehaviour
 					shooting = true; 
 					StartCoroutine (shoot ());
 				}
+
 				attack = true;
 			}
 			else
@@ -108,13 +117,40 @@ public class Enemy : MonoBehaviour
 		}
 	}
 
+	IEnumerator HitFlash ()
+	{
+		renderer.material = _hit;
+		yield return new WaitForSeconds (0.1f);
+		renderer.material = _default;
+	}
+
+	IEnumerator KILL ()
+	{
+		yield return new WaitForSeconds (0.1f);
+		Destroy (gameObject);
+	}
+
 	void OnCollisionEnter2D (Collision2D collision)
 	{
+		Destroy (collision.gameObject); 
 		if (collision.gameObject.tag == "BossSwipe")
 		{
 			Debug.Log ("Swiper no swiping");
 			flee = true;
 			fleeTime = 1;
+			health--;
+			StartCoroutine (HitFlash ());
+		}
+
+		if (collision.gameObject.tag == "BossLaser")
+		{
+			health = 0;
+		}
+
+		if (collision.gameObject.tag == "BossProjectile")
+		{
+			health--;
+			StartCoroutine (HitFlash ());
 		}
 	}
 
@@ -157,4 +193,5 @@ public class Enemy : MonoBehaviour
 		}
 		shooting = false;
 	}
+
 }

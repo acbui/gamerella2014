@@ -233,7 +233,13 @@ public class Boss : MonoBehaviour
 		level = lvl;
 		currentPos = lvl - 1;
 		updateParts ();
-		StartCoroutine (fadeHit ());
+		if (renderers [0].material == _hit) 
+		{
+			for (int i = 0; i < renderers.Length; i++)
+			{
+				renderers[i].material = initMaterials[i]; 
+			}
+		}
 	}
 
 	IEnumerator fadeHit()
@@ -255,6 +261,7 @@ public class Boss : MonoBehaviour
 	IEnumerator shootLaser (float pDelay)
 	{
 		yield return new WaitForSeconds (pDelay);
+		print ("make laser");
 		Vector3 laserPos = GameObject.Find ("LaserEnd").transform.position;
 		Instantiate (laser, laserPos, Quaternion.identity);
 	}
