@@ -8,18 +8,23 @@ public class Enemy : MonoBehaviour
 	private float deltaX;
 	private float deltaY;
 	public float speed = 1.0f;
-	private int wall;
+	private int obstacle;
 	private float distance;
-	private bool wait;
-	private float waitTime;
+	private bool attack;
+//	private float attackTime;
+	private bool flee;
+	private float fleeTime;
 
 	// Use this for initialization
 	void Start () 
 	{
-		wall = 1 << 8;
+		obstacle = 1 << 8;
 
-		wait = false;
-		waitTime = 0;
+		attack = false;
+//		attackTime = 0;
+
+		flee = false;
+		fleeTime = 0;
 	}
 	
 	// Update is called once per frame
@@ -29,22 +34,32 @@ public class Enemy : MonoBehaviour
 
 		distance = Vector2.Distance (player, transform.position);
 
-		if (waitTime > 0)
+//		if (attackTime > 0)
+//		{
+//			attackTime -= Time.deltaTime;
+//		}
+//		else
+//		{
+//			attack = false;
+//		}
+
+		if (fleeTime > 0)
 		{
-			waitTime -= Time.deltaTime;
+			fleeTime -= Time.deltaTime;
+			rigidbody2D.AddForce (-playerDirection.normalized * speed * 2.0f);
 		}
 		else
 		{
-			wait = false;
+			flee = false;
 		}
 
-		if (distance < 10 && !wait)
+		if (distance < 20 && distance != 0 && !attack && !flee)
 		{
 			deltaX = player.x - transform.position.x;
 			deltaY = player.y - transform.position.y;
 			playerDirection = new Vector2 (deltaX, deltaY);
 			
-			if (!Physics2D.Raycast (transform.position, playerDirection, 5, wall))
+			if (!Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
 			{
 				rigidbody2D.AddForce (playerDirection.normalized * speed);
 			}
@@ -53,15 +68,34 @@ public class Enemy : MonoBehaviour
 
 	void OnCollisionEnter2D (Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Player")
+		if (collision.gameObject.tag == "BossSwipe")
 		{
-			wait = true;
-			waitTime = 5;
+			Debug.Log ("Swiper no swiping");
+			flee = true;
+			fleeTime = 2;
 		}
 	}
 
-	public bool isWaiting ()
+	void OnCollisionStay2D (Collision2D collision)
 	{
-		return wait;
+		if (collision.gameObject.tag == "Player")
+		{
+			attack = true;
+//			attackTime = 3;
+		}
+		else
+		{
+			attack = false;
+		}
+	}
+
+	void OnCollisionExit2D (Collision2D collision)
+	{
+		
+	}
+
+	public bool isAttacking ()
+	{
+		return attack;
 	}
 }
