@@ -3,11 +3,42 @@ using System.Collections;
 
 public class Arrow : MonoBehaviour {
 
+	public CircleCollider2D[] targets; 
 	public Vector3 arrowTarget;
 	public float speed;
 
 	void Start () {
-		arrowTarget = GameObject.Find ("Boss").transform.position; 
+		targets = FindObjectsOfType(typeof(CircleCollider2D)) as CircleCollider2D[];
+		if (GameManager.ins.bossLevel == 1)
+		{
+			arrowTarget = targets[0].gameObject.transform.position; 
+		}
+		else 
+		{
+			if (GameManager.ins.bossLevel >= 2)
+			{ 
+				while (arrowTarget == null)
+				{
+					CircleCollider2D col = targets[Random.Range (0, targets.Length)];
+					if (col.gameObject.activeSelf && (col.gameObject.name.Contains ("level2_") || col.gameObject.name.Contains ("level1_")))
+					{
+						arrowTarget = col.gameObject.transform.position; 
+					}
+				}
+			}
+			else
+			{
+				targets = FindObjectsOfType(typeof(CircleCollider2D)) as CircleCollider2D[]; 
+				while (arrowTarget == null)
+				{
+					CircleCollider2D col = targets[Random.Range (0, targets.Length)];
+					if (col.gameObject.activeSelf)
+					{
+						arrowTarget = col.gameObject.transform.position; 
+					}
+				}
+			}
+		}
 
 		// point the arrow towards the boss
 		Vector3 diff = arrowTarget - transform.position;
