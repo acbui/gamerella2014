@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour {
 	public Transform healthbar; 
 
 	public GameObject bossUpText;
+	public SpawnScript[] l1spawns;
+	public SpawnScript[] l2spawns;
+	public SpawnScript[] l3spawns;
 
 	void Awake()
 	{
@@ -35,7 +38,36 @@ public class GameManager : MonoBehaviour {
 		updateGUI ();
 		if (Input.GetKeyDown (KeyCode.Z))
 		{
+			//bossUp ();
+		}
+
+		if (bossLevel == 1 && enemyCount >= 3)
+		{
+			foreach (SpawnScript s in l1spawns)
+			{
+				Destroy (s.gameObject);
+			}
+			foreach (SpawnScript s in l2spawns)
+			{
+				s.enabled = true;
+			}
 			bossUp ();
+		}
+		else if (bossLevel == 2 && enemyCount >= 6)
+		{
+			foreach (SpawnScript s in l2spawns)
+			{
+				Destroy (s.gameObject);
+			}
+			foreach (SpawnScript s in l3spawns)
+			{
+				s.enabled = true;
+			}
+			bossUp();
+		}
+		else if (bossLevel == 3 && enemyCount >= 12)
+		{
+			Application.LoadLevel ("Win");
 		}
 		checkHealth ();
 	}
@@ -47,6 +79,7 @@ public class GameManager : MonoBehaviour {
 
 	public void bossUp()
 	{
+		enemyCount = 0;
 		if (bossLevel < 3)
 		{
 			bossLevel++; 

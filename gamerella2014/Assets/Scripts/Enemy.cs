@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
 
 		if (enemyClass == EnemyClass.Warrior)
 		{
-			if (distance < 10 && distance != 0 && !attack && !flee)
+			if (distance < 30 && distance != 0 && !attack && !flee)
 			{
 				deltaX = player.x - transform.position.x;
 				deltaY = player.y - transform.position.y;
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
 
 		if (enemyClass == EnemyClass.Archer || enemyClass == EnemyClass.Mage)
 		{
-			if (distance < 10 && distance >= 5 && distance != 0 && !attack && !flee)
+			if (distance < 30 && distance >= 6 && distance != 0 && !attack && !flee)
 			{
 				deltaX = player.x - transform.position.x;
 				deltaY = player.y - transform.position.y;
@@ -102,7 +102,7 @@ public class Enemy : MonoBehaviour
 				}
 			}
 
-			if (distance <= 5 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
+			if (distance <= 6 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
 			{
 				if (!shooting)
 				{
@@ -126,7 +126,8 @@ public class Enemy : MonoBehaviour
 
 	IEnumerator KILL ()
 	{
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds (0.05f);
+		GameManager.ins.enemyCount++;
 		Destroy (gameObject);
 	}
 
@@ -135,10 +136,13 @@ public class Enemy : MonoBehaviour
 		if (collision.gameObject.tag == "BossSwipe")
 		{
 			Debug.Log ("Swiper no swiping");
-			flee = true;
-			fleeTime = 1;
-			health--;
-			StartCoroutine (HitFlash ());
+			if (GameObject.Find ("Player").GetComponent<Boss>().attacking)
+			{
+				flee = true;
+				fleeTime = 1;
+				health--;
+				StartCoroutine (HitFlash ());
+			}
 		}
 
 		if (collision.gameObject.tag == "BossLaser")

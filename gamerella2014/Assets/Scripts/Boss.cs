@@ -61,6 +61,8 @@ public class Boss : MonoBehaviour
 
 	public AudioClip[] clips;
 
+	public bool attacking;
+
 	void Start () 
 	{
 		level = 1;
@@ -131,6 +133,7 @@ public class Boss : MonoBehaviour
 			{
 				if (swipeCurrent >= swipeCooldown)
 				{
+					attacking = true; 
 					audio.PlayOneShot (clips[4]);
 					if (GameObject.Find ("MouseTarget").transform.position.x > 0)
 					{
@@ -261,6 +264,7 @@ public class Boss : MonoBehaviour
 	{
 		yield return new WaitForSeconds (pDelay);
 		anim.SetInteger ("BossAttack", 0); 
+		attacking = false;
 	}
 
 	IEnumerator shootLaser (float pDelay)

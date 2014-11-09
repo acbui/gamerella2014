@@ -5,12 +5,12 @@ public class SpawnScript : MonoBehaviour
 {
 	public GameObject enemy;
 	public float timer;
-	public int cap = 4;
+	public int cap;
 	private int count;
 
 	void Awake ()
 	{
-		timer = Time.time + 1;
+		timer = Time.time + 2;
 	}
 	// Use this for initialization
 	void Start () 
@@ -24,7 +24,7 @@ public class SpawnScript : MonoBehaviour
 		if (timer < Time.time && count < cap)
 		{
 			Spawn ();
-			timer = Time.time + 1;
+			timer = Time.time + 2;
 			count++;
 		}
 	}
