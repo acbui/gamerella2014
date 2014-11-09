@@ -233,9 +233,12 @@ public class Boss : MonoBehaviour
 		level = lvl;
 		currentPos = lvl - 1;
 		updateParts ();
-		for (int i = 0; i < renderers.Length; i++)
+		if (renderers [0].material == _hit) 
 		{
-			renderers[i].material = initMaterials[i]; 
+			for (int i = 0; i < renderers.Length; i++)
+			{
+				renderers[i].material = initMaterials[i]; 
+			}
 		}
 	}
 
