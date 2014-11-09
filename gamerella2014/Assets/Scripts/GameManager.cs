@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
 	// for updating the healthbar
 	public Transform healthbar; 
 
+	public GameObject bossUpText;
+
 	void Awake()
 	{
 		ins = this;
@@ -24,6 +26,8 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		bossLevel = 1; 
+		GameObject txt = Instantiate (bossUpText) as GameObject;
+		txt.GetComponent<TextMesh>().text = "Level " + bossLevel;
 	}
 	
 	// Update is called once per frame
@@ -45,6 +49,8 @@ public class GameManager : MonoBehaviour {
 		if (bossLevel < 3)
 		{
 			bossLevel++; 
+			GameObject txt = Instantiate (bossUpText) as GameObject;
+			txt.GetComponent<TextMesh>().text = "Level " + bossLevel;
 			CamZoom cam = FindObjectOfType(typeof(CamZoom)) as CamZoom;
 			cam.updateSize (bossLevel);
 			Boss b = FindObjectOfType (typeof(Boss)) as Boss; 

@@ -255,6 +255,7 @@ public class Boss : MonoBehaviour
 	IEnumerator shootLaser (float pDelay)
 	{
 		yield return new WaitForSeconds (pDelay);
+		print ("make laser");
 		Vector3 laserPos = GameObject.Find ("LaserEnd").transform.position;
 		Instantiate (laser, laserPos, Quaternion.identity);
 	}
