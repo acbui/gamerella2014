@@ -32,7 +32,10 @@ public class Boss : MonoBehaviour
 	public int magicDamage; 
 	public int arrowDamage; 
 
-	public GameObject dmgText; 
+	public GameObject dmgText;
+
+	public Material _default;
+	public Material _hit;
 
 	void Start () 
 	{
@@ -42,6 +45,8 @@ public class Boss : MonoBehaviour
 		projectileCurrent = projectileCooldown;
 		laserCurrent = laserCooldown;
 		shieldCurrent = shieldCooldown; 
+
+		_default = renderer.material;
 	}
 
 	void Update () 
@@ -120,38 +125,46 @@ public class Boss : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D col)
 	{
-		if (col.gameObject.tag == "Sword")
+		if (!hit)
 		{
-			Destroy (col.gameObject);
-			int damage = Random.Range (0, swordDamage+1);
-			HP -= damage;
-			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-			GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-			txt.GetComponent<TextMesh>().text = "" + damage; 
+			if (col.tag == "Sword")
+			{
+				int damage = Random.Range (0, swordDamage+1);
+				HP -= damage;
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
 
-		}
-		else if (col.gameObject.tag == "Magic")
-		{
-			Destroy (col.gameObject);
-			int damage = Random.Range (0, magicDamage+1);
-			HP -= damage;
-			Destroy (col.gameObject); 
-			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-			GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-			txt.GetComponent<TextMesh>().text = "" + damage; 
-		}
+			}
+			else if (col.tag == "Magic")
+			{
+				int damage = Random.Range (0, magicDamage+1);
+				HP -= damage;
+				Destroy (col.gameObject); 
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
+			}
 
-		else if (col.gameObject.tag == "Arrow")
-		{
-			Debug.Log ("hit");
-			Destroy (col.gameObject);
-			int damage = Random.Range (0, arrowDamage+1);
-			print (damage); 
-			HP -= damage; 
-			Destroy (col.gameObject);
-			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-			GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-			txt.GetComponent<TextMesh>().text = "" + damage; 
-		} 
+			else if (col.tag == "Arrow")
+			{
+				int damage = Random.Range (0, arrowDamage+1);
+				HP -= damage; 
+				Destroy (col.gameObject);
+				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+				txt.GetComponent<TextMesh>().text = "" + damage; 
+			}
+			hit = true; 
+
+			// Hit marking
+			GetComponent<SpriteRenderer>().material = _hit;
+		}
+	}
+
+	void OnTriggerExit2D (Collider2D col)
+	{
+		hit = false;
+		GetComponent<SpriteRenderer> ().material = _default;
 	}
 }

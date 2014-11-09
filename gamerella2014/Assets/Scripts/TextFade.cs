@@ -6,6 +6,7 @@ public class TextFade : MonoBehaviour {
 	private TextMesh mesh; 
 	private bool fading; 
 	public float delay;
+	public float speed; 
 
 	void Start () 
 	{
@@ -18,6 +19,16 @@ public class TextFade : MonoBehaviour {
 	{
 		if (fading)
 		{
+			print (mesh.color.a);
+			mesh.color = Color.Lerp (mesh.color, new Color (mesh.color.r, mesh.color.g, mesh.color.b, 0), speed*Time.deltaTime);
 		}
+		if (mesh.color.a <= 0.05f)
+			Destroy (gameObject); 
+	}
+
+	IEnumerator delayFade()
+	{
+		yield return new WaitForSeconds (delay);
+		fading = true; 
 	}
 }
