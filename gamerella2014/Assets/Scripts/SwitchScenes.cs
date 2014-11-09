@@ -8,7 +8,7 @@ public class SwitchScenes : MonoBehaviour {
 		{
 			Destroy (GameObject.Find ("GameManager"));
 		}
-		if (Input.anyKeyDown)
+		if (Input.GetKeyDown (KeyCode.Space))
 		{
 			if (Application.loadedLevelName.Equals ("Title"))
 			{
