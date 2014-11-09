@@ -164,6 +164,7 @@ public class Boss : MonoBehaviour
 
 	void OnTriggerExit2D (Collider2D col)
 	{
-		hit = false; 
+		hit = false;
+		GetComponent<SpriteRenderer> ().material = _default;
 	}
 }
