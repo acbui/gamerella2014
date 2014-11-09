@@ -21,10 +21,10 @@ public class Boss : MonoBehaviour
 	public int laserCooldown; 
 	public int shieldCooldown;
 
-	private int swipeCurrent;
-	private int projectileCurrent;
-	private int laserCurrent;
-	private int shieldCurrent;
+	public int swipeCurrent;
+	public int projectileCurrent;
+	public int laserCurrent;
+	public int shieldCurrent;
 
 	// damage values
 	public int swordDamage;
@@ -58,6 +58,8 @@ public class Boss : MonoBehaviour
 
 	public Collider2D[] torsocols;
 	public Collider2D[] bellycols;
+
+	public AudioClip[] clips;
 
 	void Start () 
 	{
@@ -117,6 +119,7 @@ public class Boss : MonoBehaviour
 			if (projectileCurrent >= projectileCooldown)
 			{
 				Instantiate (projectile); 
+				audio.PlayOneShot(clips[3]);
 				projectileCurrent = 0; 
 			}
 		}
@@ -128,6 +131,7 @@ public class Boss : MonoBehaviour
 			{
 				if (swipeCurrent >= swipeCooldown)
 				{
+					audio.PlayOneShot (clips[4]);
 					if (GameObject.Find ("MouseTarget").transform.position.x > 0)
 					{
 						anim.SetInteger ("BossAttack", 2);
@@ -200,6 +204,7 @@ public class Boss : MonoBehaviour
 
 		if (col.tag == "Sword" || col.tag == "Magic" || col.tag == "Arrow" )
 		{
+			audio.PlayOneShot(clips[0]);
 			HP -= damage;
 			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
 			Destroy (col.gameObject); 
@@ -261,12 +266,13 @@ public class Boss : MonoBehaviour
 	IEnumerator shootLaser (float pDelay)
 	{
 		yield return new WaitForSeconds (pDelay);
-		print ("make laser");
+		int cl = Random.Range (0, 2);
+		audio.PlayOneShot (clips [cl]);
 		Vector3 laserPos = GameObject.Find ("LaserEnd").transform.position;
 		Instantiate (laser, laserPos, Quaternion.identity);
 	}
 
-	void updateParts()
+	public void updateParts()
 	{
 		if (level == 1)
 		{

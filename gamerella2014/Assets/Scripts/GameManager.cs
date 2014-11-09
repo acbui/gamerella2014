@@ -63,7 +63,47 @@ public class GameManager : MonoBehaviour {
 	{
 		if (boss.HP <= 0)
 		{
+			Application.LoadLevel ("Lose");
+		}
+	}
 
+	void initialize()
+	{
+		GameObject cam = GameObject.Find ("Main Camera");
+		CamZoom c = cam.GetComponent<CamZoom> ();
+		c.currentSize = 0;
+	}
+
+	void initializeBoss()
+	{
+		GameObject b = Instantiate (BossPrefab) as GameObject;
+		boss = b.GetComponent<Boss> ();
+
+		boss.level = 1;
+		boss.currentPos = boss.level - 1; 
+		
+		boss.anim = boss.GetComponent<Animator> (); 
+		boss.level2torso = GameObject.Find ("boss_torso");
+		boss.level3belly = GameObject.Find ("boss_torso_lower");
+		
+		boss.torsors = boss.level2torso.GetComponentsInChildren<SpriteRenderer>() as SpriteRenderer[];
+		boss.bellyrs = boss.level3belly.GetComponentsInChildren<SpriteRenderer>() as SpriteRenderer[];
+		
+		boss.torsocols = boss.level2torso.GetComponentsInChildren<Collider2D>() as Collider2D[];
+		boss.bellycols = boss.level3belly.GetComponentsInChildren<Collider2D>() as Collider2D[];
+		
+		boss.updateParts ();
+		
+		boss.swipeCurrent = boss.swipeCooldown;
+		boss.projectileCurrent = boss.projectileCooldown;
+		boss.laserCurrent = boss.laserCooldown;
+		boss.shieldCurrent = boss.shieldCooldown; 
+		
+		boss.renderers = gameObject.GetComponentsInChildren<SpriteRenderer> () as SpriteRenderer[]; 
+		boss.initMaterials = new Material[boss.renderers.Length]; 
+		for (int i = 0; i < boss.initMaterials.Length; i++)
+		{
+			boss.initMaterials[i] = boss.renderers[i].material; 
 		}
 	}
 }

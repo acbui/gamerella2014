@@ -75,7 +75,6 @@ public class Arrow : MonoBehaviour {
 
 	void Update()
 	{
-		arrowTarget = coll.gameObject.transform.position;
 	}
 
 	void FixedUpdate()
