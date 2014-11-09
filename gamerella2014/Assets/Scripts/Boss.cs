@@ -50,14 +50,31 @@ public class Boss : MonoBehaviour
 	public SpriteRenderer[] renderers;
 	public Material[] initMaterials;
 
+	// animation stuff
+	public Animator anim; 
+
+	public SpriteRenderer[] torsors;
+	public SpriteRenderer[] bellyrs;
+
+	public Collider2D[] torsocols;
+	public Collider2D[] bellycols;
+
 	void Start () 
 	{
-		level2torso = GameObject.Find ("boss_torso");
-		level3belly = GameObject.Find ("boss_torso_lower");
-		level2torso.SetActive (false);
-		level3belly.SetActive (false); 
 		level = 1;
 		currentPos = level - 1; 
+
+		anim = gameObject.GetComponent<Animator> (); 
+		level2torso = GameObject.Find ("boss_torso");
+		level3belly = GameObject.Find ("boss_torso_lower");
+
+		torsors = level2torso.GetComponentsInChildren<SpriteRenderer>() as SpriteRenderer[];
+		bellyrs = level3belly.GetComponentsInChildren<SpriteRenderer>() as SpriteRenderer[];
+		
+		torsocols = level2torso.GetComponentsInChildren<Collider2D>() as Collider2D[];
+		bellycols = level3belly.GetComponentsInChildren<Collider2D>() as Collider2D[];
+
+		updateParts ();
 
 		swipeCurrent = swipeCooldown;
 		projectileCurrent = projectileCooldown;
@@ -113,11 +130,13 @@ public class Boss : MonoBehaviour
 				{
 					if (GameObject.Find ("MouseTarget").transform.position.x > 0)
 					{
-						Instantiate (swipe); 
+						anim.SetInteger ("BossAttack", 2);
+						StartCoroutine (stopAnimation(0.75f));
 					}
 					else 
 					{
-						Instantiate (swipe); 
+						anim.SetInteger ("BossAttack", 1); 
+						StartCoroutine (stopAnimation(0.75f));
 					}
 					swipeCurrent = 0; 
 				}
@@ -127,13 +146,22 @@ public class Boss : MonoBehaviour
 		// Laser. 
 		else if (Input.GetKeyDown (KeyCode.Alpha3))
 		{
-			print ("key");
 			if (level > 2)
 			{
 				if (laserCurrent >= laserCooldown)
 				{
-					print ("lasers");
-					Instantiate (laser);
+					if (GameObject.Find ("MouseTarget").transform.position.x > 0)
+					{
+						anim.SetInteger ("BossAttack", 4);
+						StartCoroutine (shootLaser(0.3f)); 
+						StartCoroutine (stopAnimation(0.75f));
+					}
+					else 
+					{
+						anim.SetInteger ("BossAttack", 3); 
+						StartCoroutine (shootLaser(0.30f));
+						StartCoroutine (stopAnimation(0.75f));
+					}
 					laserCurrent = 0; 
 				} 
 			}
@@ -204,10 +232,8 @@ public class Boss : MonoBehaviour
 		}
 		level = lvl;
 		currentPos = lvl - 1;
-		if (lvl == 2)
-			level2torso.SetActive(true);
-		if (lvl == 3)
-			level3belly.SetActive(true);
+		updateParts ();
+		StartCoroutine (fadeHit ());
 	}
 
 	IEnumerator fadeHit()
@@ -217,6 +243,80 @@ public class Boss : MonoBehaviour
 		for (int i = 0; i < renderers.Length; i++)
 		{
 			renderers[i].material = initMaterials[i]; 
+		}
+	}
+
+	IEnumerator stopAnimation(float pDelay)
+	{
+		yield return new WaitForSeconds (pDelay);
+		anim.SetInteger ("BossAttack", 0); 
+	}
+
+	IEnumerator shootLaser (float pDelay)
+	{
+		yield return new WaitForSeconds (pDelay);
+		Vector3 laserPos = GameObject.Find ("LaserEnd").transform.position;
+		Instantiate (laser, laserPos, Quaternion.identity);
+	}
+
+	void updateParts()
+	{
+		if (level == 1)
+		{
+			foreach (SpriteRenderer r in torsors)
+			{
+				r.enabled = false; 
+			}
+			foreach (SpriteRenderer r in bellyrs)
+			{
+				r.enabled = false; 
+			}
+			foreach (Collider2D c in torsocols)
+			{
+				c.enabled = false; 
+			}
+			foreach (Collider2D c in bellycols)
+			{
+				c.enabled = false; 
+			}
+		}
+		else if (level == 2)
+		{
+			foreach (SpriteRenderer r in torsors)
+			{
+				r.enabled = true; 
+			}
+			foreach (SpriteRenderer r in bellyrs)
+			{
+				r.enabled = false; 
+			}
+			foreach (Collider2D c in torsocols)
+			{
+				c.enabled = true; 
+			}
+			foreach (Collider2D c in bellycols)
+			{
+				c.enabled = false; 
+			}
+		}
+		else 
+		{
+			foreach (SpriteRenderer r in torsors)
+			{
+				r.enabled = true; 
+			}
+			foreach (SpriteRenderer r in bellyrs)
+			{
+				r.enabled = true; 
+			}
+			foreach (Collider2D c in torsocols)
+			{
+				c.enabled = true; 
+			}
+			foreach (Collider2D c in bellycols)
+			{
+				c.enabled = true; 
+			}
 		}
 	}
 }
