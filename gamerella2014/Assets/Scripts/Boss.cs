@@ -233,7 +233,10 @@ public class Boss : MonoBehaviour
 		level = lvl;
 		currentPos = lvl - 1;
 		updateParts ();
-		StartCoroutine (fadeHit ());
+		for (int i = 0; i < renderers.Length; i++)
+		{
+			renderers[i].material = initMaterials[i]; 
+		}
 	}
 
 	IEnumerator fadeHit()
