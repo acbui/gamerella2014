@@ -27,7 +27,6 @@ public class Boss : MonoBehaviour
 	private int shieldCurrent;
 
 	// damage values
-	public bool hit; 
 	public int swordDamage;
 	public int magicDamage; 
 	public int arrowDamage; 
@@ -36,6 +35,7 @@ public class Boss : MonoBehaviour
 
 	public Material _default;
 	public Material _hit;
+	public float fadeDelay; 
 
 	void Start () 
 	{
@@ -125,46 +125,45 @@ public class Boss : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D col)
 	{
-		if (!hit)
+		int damage = 0; 
+	
+		if (col.tag == "Sword")
 		{
-			if (col.tag == "Sword")
-			{
-				int damage = Random.Range (0, swordDamage+1);
-				HP -= damage;
-				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-				txt.GetComponent<TextMesh>().text = "" + damage; 
-
-			}
-			else if (col.tag == "Magic")
-			{
-				int damage = Random.Range (0, magicDamage+1);
-				HP -= damage;
-				Destroy (col.gameObject); 
-				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-				txt.GetComponent<TextMesh>().text = "" + damage; 
-			}
-
-			else if (col.tag == "Arrow")
-			{
-				int damage = Random.Range (0, arrowDamage+1);
-				HP -= damage; 
-				Destroy (col.gameObject);
-				Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
-				GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
-				txt.GetComponent<TextMesh>().text = "" + damage; 
-			}
-			hit = true; 
-
-			// Hit marking
-			GetComponent<SpriteRenderer>().material = _hit;
+			damage = Random.Range (0, swordDamage+1);
 		}
+		else if (col.tag == "Magic")
+		{
+			damage = Random.Range (0, magicDamage+1);
+		}
+
+		else if (col.tag == "Arrow")
+		{
+			damage = Random.Range (0, arrowDamage+1); 
+		}
+
+		if (col.tag == "Sword" || col.tag == "Magic" || col.tag == "Arrow" )
+		{
+			Destroy (col.gameObject); 
+			HP -= damage;
+			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+			GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
+			if (damage > 0)
+			{
+				GetComponent<SpriteRenderer>().material = _hit;
+				txt.GetComponent<TextMesh>().text = "" + damage; 
+			}
+			else 
+			{
+				txt.GetComponent<TextMesh>().text = "Miss!"; 
+			}
+		}
+		StartCoroutine (fadeHit ());
+
 	}
 
-	void OnTriggerExit2D (Collider2D col)
+	IEnumerator fadeHit()
 	{
-		hit = false;
-		GetComponent<SpriteRenderer> ().material = _default;
+		yield return new WaitForSeconds (fadeDelay); 
+		GetComponent<SpriteRenderer>().material = _default;
 	}
 }
