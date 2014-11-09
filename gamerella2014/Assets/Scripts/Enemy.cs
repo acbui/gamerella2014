@@ -131,8 +131,7 @@ public class Enemy : MonoBehaviour
 	}
 
 	void OnCollisionEnter2D (Collision2D collision)
-	{
-		Destroy (collision.gameObject); 
+	{ 
 		if (collision.gameObject.tag == "BossSwipe")
 		{
 			Debug.Log ("Swiper no swiping");
@@ -149,6 +148,7 @@ public class Enemy : MonoBehaviour
 
 		if (collision.gameObject.tag == "BossProjectile")
 		{
+			Destroy (collision.gameObject);
 			health--;
 			StartCoroutine (HitFlash ());
 		}

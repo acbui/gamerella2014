@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour {
 		{
 			bossUp ();
 		}
+		checkHealth ();
 	}
 
 	void updateGUI()
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour {
 		healthbar.localScale = new Vector3 (((float) boss.HP)/ ((float) boss.maxHP), healthbar.localScale.y, healthbar.localScale.z);
 	}
 
-	void bossUp()
+	public void bossUp()
 	{
 		if (bossLevel < 3)
 		{
@@ -55,6 +56,14 @@ public class GameManager : MonoBehaviour {
 			cam.updateSize (bossLevel);
 			Boss b = FindObjectOfType (typeof(Boss)) as Boss; 
 			b.updateBoss (bossLevel); 
+		}
+	}
+
+	void checkHealth()
+	{
+		if (boss.HP <= 0)
+		{
+
 		}
 	}
 }
