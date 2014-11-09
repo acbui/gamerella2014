@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour {
 	{
 		if (boss.HP <= 0)
 		{
-			//Application.LoadLevel ("Lose");
+			Application.LoadLevel ("Title");
 		}
 	}
 

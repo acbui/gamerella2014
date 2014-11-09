@@ -4,6 +4,10 @@ using System.Collections;
 public class SwitchScenes : MonoBehaviour {
 	
 	void Update () {
+		if (GameObject.Find ("GameManager") != null)
+		{
+			Destroy (GameObject.Find ("GameManager"));
+		}
 		if (Input.anyKeyDown)
 		{
 			if (Application.loadedLevelName.Equals ("Title"))
