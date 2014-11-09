@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+guid: 510211f42de4f4a47879004f1bbf8c76
+=======
 guid: 2464fb4bed255be489f36ea2d07be37b
+>>>>>>> 6bfdfc49577aa9f785f593f1c737a424d2d582c6
 TrueTypeFontImporter:
   serializedVersion: 2
   fontSize: 16
