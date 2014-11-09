@@ -42,18 +42,35 @@ public class Boss : MonoBehaviour
 	public int currentPos; 
 	public float speed; 
 
+	// turn on body parts on level up
+	public GameObject level2torso;
+	public GameObject level3belly; 
+
+	// renderer materials
+	public SpriteRenderer[] renderers;
+	public Material[] initMaterials;
+
 	void Start () 
 	{
-		//level = 1;
+		level2torso = GameObject.Find ("boss_torso");
+		level3belly = GameObject.Find ("boss_torso_lower");
+		level2torso.SetActive (false);
+		level3belly.SetActive (false); 
+		level = 1;
 		currentPos = level - 1; 
-		level = 5; 
 
 		swipeCurrent = swipeCooldown;
 		projectileCurrent = projectileCooldown;
 		laserCurrent = laserCooldown;
 		shieldCurrent = shieldCooldown; 
 
-		_default = renderer.material;
+		renderers = gameObject.GetComponentsInChildren<SpriteRenderer> () as SpriteRenderer[]; 
+		initMaterials = new Material[renderers.Length]; 
+		for (int i = 0; i < initMaterials.Length; i++)
+		{
+			initMaterials[i] = renderers[i].material; 
+		}
+		//_default = renderer.material;
 	}
 
 	void Update () 
@@ -135,7 +152,7 @@ public class Boss : MonoBehaviour
 		}
 	}
 
-	void OnTriggerEnter2D (Collider2D col)
+	public void getHit (Collider2D col)
 	{
 		int damage = 0; 
 	
@@ -155,13 +172,17 @@ public class Boss : MonoBehaviour
 
 		if (col.tag == "Sword" || col.tag == "Magic" || col.tag == "Arrow" )
 		{
-			Destroy (col.gameObject); 
 			HP -= damage;
 			Vector3 txtPos = new Vector3 (col.gameObject.transform.position.x + 22, col.gameObject.transform.position.y, col.gameObject.transform.position.z);
+			Destroy (col.gameObject); 
 			GameObject txt = Instantiate (dmgText, txtPos, Quaternion.identity) as GameObject; 
 			if (damage > 0)
 			{
-				GetComponent<SpriteRenderer>().material = _hit;
+				//GetComponent<SpriteRenderer>().material = _hit;
+				foreach (SpriteRenderer r in renderers)
+				{
+					r.material = _hit;
+				}
 				txt.GetComponent<TextMesh>().text = "" + damage; 
 			}
 			else 
@@ -175,13 +196,27 @@ public class Boss : MonoBehaviour
 
 	public void updateBoss(int lvl)
 	{
+		renderers = gameObject.GetComponentsInChildren<SpriteRenderer> () as SpriteRenderer[]; 
+		initMaterials = new Material[renderers.Length]; 
+		for (int i = 0; i < initMaterials.Length; i++)
+		{
+			initMaterials[i] = renderers[i].material; 
+		}
 		level = lvl;
 		currentPos = lvl - 1;
+		if (lvl == 2)
+			level2torso.SetActive(true);
+		if (lvl == 3)
+			level3belly.SetActive(true);
 	}
 
 	IEnumerator fadeHit()
 	{
 		yield return new WaitForSeconds (fadeDelay); 
-		GetComponent<SpriteRenderer>().material = _default;
+		//GetComponent<SpriteRenderer>().material = _default;
+		for (int i = 0; i < renderers.Length; i++)
+		{
+			renderers[i].material = initMaterials[i]; 
+		}
 	}
 }

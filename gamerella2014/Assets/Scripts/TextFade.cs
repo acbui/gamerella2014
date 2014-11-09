@@ -18,10 +18,7 @@ public class TextFade : MonoBehaviour {
 	void FixedUpdate () 
 	{
 		if (fading)
-		{
-			print (mesh.color.a);
 			mesh.color = Color.Lerp (mesh.color, new Color (mesh.color.r, mesh.color.g, mesh.color.b, 0), speed*Time.deltaTime);
-		}
 		if (mesh.color.a <= 0.05f)
 			Destroy (gameObject); 
 	}
