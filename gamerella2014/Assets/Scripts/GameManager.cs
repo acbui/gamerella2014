@@ -42,10 +42,13 @@ public class GameManager : MonoBehaviour {
 
 	void bossUp()
 	{
-		bossLevel++; 
-		CamZoom cam = FindObjectOfType(typeof(CamZoom)) as CamZoom;
-		cam.updateSize (bossLevel);
-		Boss b = FindObjectOfType (typeof(Boss)) as Boss; 
-		b.updateBoss (bossLevel); 
+		if (bossLevel < 3)
+		{
+			bossLevel++; 
+			CamZoom cam = FindObjectOfType(typeof(CamZoom)) as CamZoom;
+			cam.updateSize (bossLevel);
+			Boss b = FindObjectOfType (typeof(Boss)) as Boss; 
+			b.updateBoss (bossLevel); 
+		}
 	}
 }

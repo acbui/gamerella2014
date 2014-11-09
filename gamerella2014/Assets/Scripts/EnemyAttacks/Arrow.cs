@@ -15,7 +15,12 @@ public class Arrow : MonoBehaviour {
 		}
 		else 
 		{
-			if (GameManager.ins.bossLevel >= 2)
+			CircleCollider2D col = targets[Random.Range (0, targets.Length)];
+			if (col.gameObject.activeSelf)
+			{
+				arrowTarget = col.gameObject.transform.position; 
+			}
+			/*if (GameManager.ins.bossLevel >= 2)
 			{ 
 				while (arrowTarget == null)
 				{
@@ -37,7 +42,7 @@ public class Arrow : MonoBehaviour {
 						arrowTarget = col.gameObject.transform.position; 
 					}
 				}
-			}
+			}*/
 		}
 
 		// point the arrow towards the boss
