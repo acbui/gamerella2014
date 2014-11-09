@@ -32,7 +32,10 @@ public class Boss : MonoBehaviour
 	public int magicDamage; 
 	public int arrowDamage; 
 
-	public GameObject dmgText; 
+	public GameObject dmgText;
+
+	public Material _default;
+	public Material _hit;
 
 	void Start () 
 	{
@@ -42,6 +45,8 @@ public class Boss : MonoBehaviour
 		projectileCurrent = projectileCooldown;
 		laserCurrent = laserCooldown;
 		shieldCurrent = shieldCooldown; 
+
+		_default = renderer.material;
 	}
 
 	void Update () 
@@ -151,6 +156,9 @@ public class Boss : MonoBehaviour
 				txt.GetComponent<TextMesh>().text = "" + damage; 
 			}
 			hit = true; 
+
+			// Hit marking
+			GetComponent<SpriteRenderer>().material = _hit;
 		}
 	}
 
