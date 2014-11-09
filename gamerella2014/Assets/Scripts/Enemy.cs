@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
 //	private float attackTime;
 	private bool flee;
 	private float fleeTime;
+	public int health = 2;
+	public Material _hit;
+	private Material _default;
 
 	public enum EnemyClass
 	{
@@ -22,10 +25,6 @@ public class Enemy : MonoBehaviour
 		Mage
 	}
 	public EnemyClass enemyClass;
-
-	public GameObject arrowPrefab;
-	public GameObject fireballPrefab;
-	private bool shooting;
 
 	// Use this for initialization
 	void Start () 
@@ -37,12 +36,14 @@ public class Enemy : MonoBehaviour
 
 		flee = false;
 		fleeTime = 0;
+
+		_default = renderer.material;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		player = GameObject.Find ("Boss Total").transform.position;
+		player = GameObject.Find ("Player").transform.position;
 
 		distance = Vector2.Distance (player, transform.position);
 
@@ -54,6 +55,9 @@ public class Enemy : MonoBehaviour
 //		{
 //			attack = false;
 //		}
+
+		if (health <= 0)
+			StartCoroutine (KILL ());
 
 		if (fleeTime > 0)
 		{
@@ -96,16 +100,24 @@ public class Enemy : MonoBehaviour
 
 			if (distance <= 5 && distance >= 1 && !Physics2D.Raycast (transform.position, playerDirection, 5, obstacle))
 			{
-				if (!shooting)
-				{
-					shooting = true; 
-					StartCoroutine (shoot ());
-				}
 				attack = true;
 			}
 			else
 				attack = false;
 		}
+	}
+
+	IEnumerator HitFlash ()
+	{
+		renderer.material = _hit;
+		yield return new WaitForSeconds (0.1f);
+		renderer.material = _default;
+	}
+
+	IEnumerator KILL ()
+	{
+		yield return new WaitForSeconds (0.1f);
+		Destroy (gameObject);
 	}
 
 	void OnCollisionEnter2D (Collision2D collision)
@@ -115,6 +127,19 @@ public class Enemy : MonoBehaviour
 			Debug.Log ("Swiper no swiping");
 			flee = true;
 			fleeTime = 1;
+			health--;
+			StartCoroutine (HitFlash ());
+		}
+
+		if (collision.gameObject.tag == "BossLaser")
+		{
+			health = 0;
+		}
+
+		if (collision.gameObject.tag == "BossProjectile")
+		{
+			health--;
+			StartCoroutine (HitFlash ());
 		}
 	}
 
@@ -122,7 +147,7 @@ public class Enemy : MonoBehaviour
 	{
 		if (enemyClass == EnemyClass.Warrior)
 		{
-			if (collision.gameObject.tag == "Boss")
+			if (collision.gameObject.tag == "Player")
 			{
 				attack = true;
 //				attackTime = 3;
@@ -142,19 +167,5 @@ public class Enemy : MonoBehaviour
 	public bool isAttacking ()
 	{
 		return attack;
-	}
-
-	IEnumerator shoot()
-	{
-		yield return new WaitForSeconds (1); 
-		if (enemyClass == EnemyClass.Archer)
-		{
-			Instantiate (arrowPrefab, transform.position, Quaternion.identity);
-		}
-		if (enemyClass == EnemyClass.Mage)
-		{
-			Instantiate (fireballPrefab, transform.position, Quaternion.identity);
-		}
-		shooting = false;
 	}
 }
